@@ -223,17 +223,59 @@ th,td,.seat-record,.seat-bottom{border-color:#D5DDE4}
 .rating-star{border:0;background:transparent;color:#C9B9A8;font-size:20px;line-height:1;padding:2px 0;cursor:pointer}
 .rating-star.selected{color:#C49A52}
 
-/* 빈티지 배경 - 추후 디아길레프 전용 이미지로 교체 가능 */
+
+/* DIAGHILEV BACKGROUND */
 body{
- background-image:linear-gradient(rgba(244,240,231,.35),rgba(244,240,231,.35)),url("빈 공간의 빈티지 극장 정물화.png");
- background-size:cover;background-position:center top;background-repeat:no-repeat;background-attachment:fixed;
+ background-image:
+  linear-gradient(
+   rgba(244,240,231,.12),
+   rgba(244,240,231,.12)
+  ),
+  url("diaghilev_background.png");
+ background-size:cover;
+ background-position:center top;
+ background-repeat:no-repeat;
+ background-attachment:fixed;
 }
-section{background:rgba(255,249,245,.58)!important;border-color:rgba(213,221,228,.65)}
-.cast-card,.stat,.actor-count-card,.mini-seat-block,.seat-block{background:rgba(220,230,239,.58)!important}
-.notes-editor,.note-item{background:rgba(244,240,231,.65)!important}
-.seat-window{background:rgba(255,249,245,.90)!important}
-th,#actorFilter{background:rgba(220,230,239,.72)!important}
-.notes-editor select,.notes-editor textarea{background:rgba(255,249,245,.88)!important}
+
+section{
+ background:rgba(255,249,245,.58)!important;
+ border-color:rgba(213,221,228,.65);
+}
+
+.cast-card,
+.stat,
+.actor-count-card,
+.mini-seat-block,
+.seat-block{
+ background:rgba(220,230,239,.58)!important;
+}
+
+.notes-editor,
+.note-item{
+ background:rgba(244,240,231,.65)!important;
+}
+
+.seat-window{
+ background:rgba(255,249,245,.90)!important;
+}
+
+th,
+#actorFilter{
+ background:rgba(220,230,239,.72)!important;
+}
+
+.notes-editor select,
+.notes-editor textarea{
+ background:rgba(255,249,245,.88)!important;
+}
+
+@media(max-width:600px){
+ body{
+  background-attachment:scroll;
+ }
+}
+
 </style>
 </head>
 
