@@ -915,8 +915,8 @@ function createMySeatFloor(floor,seatCounts){
 
     const seat=document.createElement("div");
     seat.className="venue-seat"+(count>0?" selected":"");
-    seat.textContent=count>0?`✓${count}`:"";
-    seat.title=seatDescription(id)+(count>0?` · ${count}회`:"");
+seat.textContent=count>0?`✓${count}`:number;
+seat.title=seatDescription(id)+(count>0?` · ${count}회`:"");
 
     row.appendChild(seat);
    }
