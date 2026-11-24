@@ -871,8 +871,9 @@ const artoneSeatLayout = {
 
 
 function seatDescription(id){
- const [block,row,local]=id.split("-");
- return `${blockName(block)} ${row}열 ${seatLayoutValue(block,Number(row),Number(local))}번`;
+ const [floor,row,number]=id.split("-");
+ const floorName=floor==="first"?"1층":"2층";
+ return `${floorName} ${row}열 ${number}번`;
 }
 
 
@@ -1131,15 +1132,24 @@ function renderArtonePreview(){
      const gap=document.createElement("span");
      gap.className="venue-gap";
      row.appendChild(gap);
+
     }else if(number==="booth"){
      const booth=document.createElement("span");
      booth.className="control-booth";
      booth.textContent="부스";
      row.appendChild(booth);
+
     }else{
-     const seat=document.createElement("span");
-     seat.className="venue-seat";
-     seat.textContent=number;
+     const id=`${floor}-${data.row}-${number}`;
+     const selected=temporarySeats.includes(id);
+
+     const seat=document.createElement("button");
+     seat.type="button";
+     seat.className="venue-seat"+(selected?" selected":"");
+     seat.textContent=selected?"✓":number;
+     seat.title=seatDescription(id);
+     seat.addEventListener("click",()=>toggleSeat(id));
+
      row.appendChild(seat);
     }
    });
