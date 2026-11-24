@@ -799,17 +799,39 @@ const seatLayout={
  center:[11,10,11,10,11,10,11,11,11,11,11,11,10,8],
  right:[4,4,4,4,4,4,4,4,4,4,4,4,4,4]
 };
-function seatLayoutValue(block,row,local){
- const index=row-1;
- let n=local;
- if(block==="center"||block==="right")n+=seatLayout.left[index];
- if(block==="right")n+=seatLayout.center[index];
- return n;
-}
+
+/* YES24 ART ONE 1관 좌석 배치 */
+
+const artoneSeatLayout = {
+ first: [
+  {row:"A", seats:[22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1]},
+  {row:"B", seats:[22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1]},
+  {row:"C", centered:true, seats:[13,12,11,10,9,8,7,6,5,4,3,2,1]},
+  {row:"D", seats:[22,21,20,19,null,18,17,16,15,14,13,12,11,10,9,8,7,6,5,null,4,3,2,1]},
+  {row:"E", seats:[21,20,19,18,null,17,16,15,14,13,12,11,10,9,8,7,6,5,null,4,3,2,1]},
+  {row:"F", seats:[22,21,20,19,null,18,17,16,15,14,13,12,11,10,9,8,7,6,5,null,4,3,2,1]},
+  {row:"G", seats:[22,21,20,19,null,18,17,16,15,14,13,12,11,10,9,8,7,6,5,null,4,3,2,1]},
+  {row:"H", seats:[22,21,20,19,null,18,17,16,15,14,13,12,11,10,9,8,7,6,5,null,4,3,2,1]},
+  {row:"I", seats:[22,21,20,19,null,18,17,16,15,14,13,12,11,10,9,8,7,6,5,null,4,3,2,1]},
+  {row:"J", seats:[22,21,20,19,null,18,17,16,15,14,13,12,11,10,9,8,7,6,5,null,4,3,2,1]},
+  {row:"K", seats:[22,21,20,19,null,18,17,16,15,14,13,12,11,10,9,8,7,6,5,null,4,3,2,1]},
+  {row:"L", seats:[14,13,12,11,null,10,9,8,"booth",7,6,5,null,4,3,2,1]},
+  {row:"M", seats:[16,15,14,13,12,11,10,9,"booth",8,7,6,5,4,3,2,1]}
+ ],
+ second: [
+  {row:"N", seats:[23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1]},
+  {row:"O", seats:[22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1]},
+  {row:"P", seats:[18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1]},
+  {row:"Q", seats:[20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1]}
+ ]
+};
+
+
 function seatDescription(id){
  const [block,row,local]=id.split("-");
  return `${blockName(block)} ${row}열 ${seatLayoutValue(block,Number(row),Number(local))}번`;
 }
+
 
 function render(){
  const body=document.getElementById("scheduleBody");
