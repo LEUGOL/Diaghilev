@@ -1007,55 +1007,81 @@ function createMiniGap(){
  g.className="mini-seat-gap";
  return g;
 }
-function createMiniSeatRows(block,seatCounts){
+function createMiniSeatRows(floor,seatCounts){
  const wrapper=document.createElement("div");
  wrapper.className="mini-seat-block";
+
  const heading=document.createElement("h4");
- heading.textContent=block==="left"?"LEFT":block==="center"?"CENTER":"RIGHT";
+ heading.textContent=floor==="first"?"1층":"2층";
  wrapper.appendChild(heading);
 
- seatLayout[block].forEach((count,index)=>{
-  const rowNumber=index+1;
+ artoneSeatLayout[floor].forEach(data=>{
   const row=document.createElement("div");
   row.className="mini-seat-row";
+
   const label=document.createElement("span");
   label.className="mini-row-label";
-  label.textContent=rowNumber;
+  label.textContent=data.row;
   row.appendChild(label);
 
-  if(block==="left"&&rowNumber===5)row.append(createMiniPillar(),createMiniPillar());
-  if(block==="left"&&rowNumber===6)row.appendChild(createMiniPillar());
-  if(block==="center"&&rowNumber===14){
-   for(let i=0;i<4;i++)row.appendChild(createMiniGap());
-  }
-  for(let n=1;n<=count;n++)row.appendChild(createMiniSeat(block,rowNumber,n,seatCounts));
+  data.seats.forEach(number=>{
+   if(number===null){
+    row.appendChild(createMiniGap());
+
+   }else if(number==="booth"){
+    const booth=document.createElement("span");
+    booth.className="control-booth";
+    booth.textContent="부스";
+    row.appendChild(booth);
+
+   }else{
+    const id=`${floor}-${data.row}-${number}`;
+    const count=seatCounts[id]||0;
+
+    const seat=document.createElement("div");
+    seat.className="mini-seat"+(count>0?" selected":"");
+    seat.textContent=count>0?`✓${count}`:"";
+    seat.title=seatDescription(id)+(count>0?` · ${count}회`:"");
+
+    row.appendChild(seat);
+   }
+  });
+
   wrapper.appendChild(row);
  });
+
  return wrapper;
 }
+
 function renderSeatRecords(){
  const target=document.getElementById("seatRecordList");
  target.innerHTML="";
+
  const seatCounts={};
 
  records.forEach(r=>{
   const seats=Array.isArray(r.seatSelections)?r.seatSelections:[];
-  seats.forEach(id=>seatCounts[id]=(seatCounts[id]||0)+1);
+  seats.forEach(id=>{
+   seatCounts[id]=(seatCounts[id]||0)+1;
+  });
  });
 
  const stage=document.createElement("div");
  stage.className="mini-stage";
  stage.textContent="STAGE";
+
  const map=document.createElement("div");
  map.className="mini-seat-map";
+
  map.append(
-  createMiniSeatRows("left",seatCounts),
-  createMiniSeatRows("center",seatCounts),
-  createMiniSeatRows("right",seatCounts)
+  createMiniSeatRows("first",seatCounts),
+  createMiniSeatRows("second",seatCounts)
  );
+
  const legend=document.createElement("div");
  legend.className="mini-legend";
  legend.textContent="체크 표시 옆 숫자는 해당 좌석에 앉은 횟수";
+
  target.append(stage,map,legend);
 }
 
