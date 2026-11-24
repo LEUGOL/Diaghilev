@@ -391,20 +391,28 @@ th,
   font-size:8px;
  }
 }
-/* MY SEATS 전용 축소 */
+/* MY SEATS 전용 좌석표 */
 .my-seat-map{
  width:100%;
  overflow:hidden;
  box-sizing:border-box;
- padding:0 8px 12px;
+ padding:8px 0;
 }
 
 .my-seat-map .venue-floor-map{
  transform:scale(0.65);
  transform-origin:top center;
- width:153.85%;
- margin-left:-26.925%;
- margin-bottom:-35%;
+ width:max-content;
+ margin:0 auto;
+}
+
+.my-seat-map .venue-seat{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ text-align:center;
+ padding:0;
+ box-sizing:border-box;
 }
 </style>
 </head>
