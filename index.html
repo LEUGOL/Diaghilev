@@ -477,6 +477,47 @@ th,
 
 </div>
 
+<div class="seat-modal" id="seatModal">
+ <div class="seat-window">
+  <div class="seat-top">
+   <div>
+    <h2>MY SEAT</h2>
+    <p id="seatPerformance"></p>
+   </div>
+   <button class="secondary" onclick="closeSeatMap()">닫기</button>
+  </div>
+
+  <div class="stage">STAGE</div>
+
+  <div class="seat-legend">
+   <span><span class="legend-square"></span>좌석</span>
+   <span><span class="legend-square" style="background:#D9D5D2"></span>콘트롤 부스</span>
+  </div>
+
+  <div class="floor-tabs">
+   <button type="button" class="floor-tab active"
+    onclick="showArtoneFloor('first',this)">1층</button>
+   <button type="button" class="floor-tab"
+    onclick="showArtoneFloor('second',this)">2층</button>
+  </div>
+
+  <div class="seat-map-scroll">
+   <div id="artoneFirst" class="venue-floor-map">
+    <div id="artoneFirstRows"></div>
+   </div>
+   <div id="artoneSecond" class="venue-floor-map" style="display:none">
+    <div id="artoneSecondRows"></div>
+   </div>
+  </div>
+
+  <div class="seat-bottom">
+   <p>선택한 좌석</p>
+   <div id="selectedSeatText">선택한 좌석이 없습니다.</div>
+   <button class="secondary" onclick="clearSeats()">선택 초기화</button>
+  </div>
+ </div>
+</div>
+
 
 /* FLOOR TABS */
 
@@ -1055,6 +1096,59 @@ function makeSeatRows(block,targetId){
   target.appendChild(row);
  });
 }
+ 
+function showArtoneFloor(floor,button){
+ document.getElementById("artoneFirst").style.display =
+  floor==="first" ? "block" : "none";
+ document.getElementById("artoneSecond").style.display =
+  floor==="second" ? "block" : "none";
+
+ document.querySelectorAll(".floor-tab").forEach(tab=>{
+  tab.classList.remove("active");
+ });
+ button.classList.add("active");
+}
+
+function renderArtonePreview(){
+ ["first","second"].forEach(floor=>{
+  const target=document.getElementById(
+   floor==="first" ? "artoneFirstRows" : "artoneSecondRows"
+  );
+
+  target.innerHTML="";
+
+  artoneSeatLayout[floor].forEach(data=>{
+   const row=document.createElement("div");
+   row.className="venue-row";
+
+   const label=document.createElement("span");
+   label.className="venue-row-label";
+   label.textContent=data.row;
+   row.appendChild(label);
+
+   data.seats.forEach(number=>{
+    if(number===null){
+     const gap=document.createElement("span");
+     gap.className="venue-gap";
+     row.appendChild(gap);
+    }else if(number==="booth"){
+     const booth=document.createElement("span");
+     booth.className="control-booth";
+     booth.textContent="부스";
+     row.appendChild(booth);
+    }else{
+     const seat=document.createElement("span");
+     seat.className="venue-seat";
+     seat.textContent=number;
+     row.appendChild(seat);
+    }
+   });
+
+   target.appendChild(row);
+  });
+ });
+}
+
 function makePillar(){
  const p=document.createElement("span");
  p.className="pillar";
@@ -1072,6 +1166,7 @@ function openSeatMap(index){
  const r=records[index];
  document.getElementById("seatPerformance").textContent=`${formatDate(r.date)} ${r.time||""}`;
  document.getElementById("seatModal").classList.add("open");
+ renderArtonePreview();
  makeSeatRows("left","leftSeats");
  makeSeatRows("center","centerSeats");
  makeSeatRows("right","rightSeats");
