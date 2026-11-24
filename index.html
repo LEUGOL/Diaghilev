@@ -519,121 +519,6 @@ th,
 </div>
 
 
-/* FLOOR TABS */
-
-.floor-tabs{
- display:flex;
- justify-content:center;
- gap:8px;
- margin:16px 0;
-}
-
-.floor-tab{
- min-width:76px;
- padding:8px 20px;
- border:1px solid #183B65;
- border-radius:20px;
- background:#FFF9F5;
- color:#183B65;
- font-size:13px;
- cursor:pointer;
-}
-
-.floor-tab.active{
- background:#183B65;
- color:#fff;
-}
-
-/* VENUE SEAT MAP */
-
-.seat-map-scroll{
- width:100%;
- overflow-x:auto;
- padding:8px 4px 16px;
-}
-
-.venue-floor-map{
- width:max-content;
- min-width:100%;
- margin:0 auto;
-}
-
-.venue-row{
- display:flex;
- align-items:center;
- justify-content:center;
- gap:3px;
- min-height:25px;
- margin:4px auto;
- white-space:nowrap;
-}
-
-.venue-row-label{
- width:20px;
- flex-shrink:0;
- color:#183B65;
- font-size:11px;
- font-weight:700;
- text-align:center;
-}
-
-.venue-seat{
- width:21px;
- height:22px;
- flex-shrink:0;
- padding:0;
- border:1px solid #9BAFC2;
- border-radius:4px;
- background:#DCE6EF;
- color:#183B65;
- font-size:9px;
- cursor:pointer;
-}
-
-.venue-seat.selected{
- background:#183B65;
- border-color:#183B65;
- color:#fff;
-}
-
-.venue-gap{
- width:14px;
- flex-shrink:0;
-}
-
-.control-booth{
- display:flex;
- align-items:center;
- justify-content:center;
- width:78px;
- height:25px;
- flex-shrink:0;
- background:#D9D5D2;
- border-radius:4px;
- color:#555;
- font-size:9px;
-}
-
-@media(max-width:600px){
- .venue-seat{
-  width:19px;
-  height:21px;
-  font-size:8px;
- }
-
- .venue-row{
-  gap:2px;
- }
-
- .venue-gap{
-  width:10px;
- }
-
- .control-booth{
-  width:66px;
-  font-size:8px;
- }
-}
 
 
 <script>
@@ -986,47 +871,30 @@ function setupFilter(){
   names.map(n=>`<option value="${n}">${n}</option>`).join("");
 }
 
-/* MY SEATS 좌석표 만들기 */
-function seatId(block,row,local){return `${block}-${row}-${local}`;}
-function createMiniSeat(block,row,local,seatCounts){
- const id=seatId(block,row,local);
- const count=seatCounts[id]||0;
- const seat=document.createElement("div");
- seat.className="mini-seat"+(count>0?" selected":"");
- seat.textContent=count>0?`✓${count}`:"";
- seat.title=seatDescription(id)+(count>0?` · ${count}회`:"");
- return seat;
-}
-function createMiniPillar(){
- const p=document.createElement("span");
- p.className="mini-pillar";
- return p;
-}
-function createMiniGap(){
- const g=document.createElement("span");
- g.className="mini-seat-gap";
- return g;
-}
-function createMiniSeatRows(floor,seatCounts){
+/* MY SEATS - 공연장 좌석표와 동일한 배치 */
+function createMySeatFloor(floor,seatCounts){
  const wrapper=document.createElement("div");
- wrapper.className="mini-seat-block";
+ wrapper.className="venue-floor-map";
 
- const heading=document.createElement("h4");
+ const heading=document.createElement("div");
+ heading.className="venue-floor-heading";
  heading.textContent=floor==="first"?"1층":"2층";
  wrapper.appendChild(heading);
 
  artoneSeatLayout[floor].forEach(data=>{
   const row=document.createElement("div");
-  row.className="mini-seat-row";
+  row.className="venue-row";
 
   const label=document.createElement("span");
-  label.className="mini-row-label";
+  label.className="venue-row-label";
   label.textContent=data.row;
   row.appendChild(label);
 
   data.seats.forEach(number=>{
    if(number===null){
-    row.appendChild(createMiniGap());
+    const gap=document.createElement("span");
+    gap.className="venue-gap";
+    row.appendChild(gap);
 
    }else if(number==="booth"){
     const booth=document.createElement("span");
@@ -1039,7 +907,7 @@ function createMiniSeatRows(floor,seatCounts){
     const count=seatCounts[id]||0;
 
     const seat=document.createElement("div");
-    seat.className="mini-seat"+(count>0?" selected":"");
+    seat.className="venue-seat"+(count>0?" selected":"");
     seat.textContent=count>0?`✓${count}`:"";
     seat.title=seatDescription(id)+(count>0?` · ${count}회`:"");
 
@@ -1067,15 +935,15 @@ function renderSeatRecords(){
  });
 
  const stage=document.createElement("div");
- stage.className="mini-stage";
+ stage.className="stage";
  stage.textContent="STAGE";
 
  const map=document.createElement("div");
- map.className="mini-seat-map";
+ map.className="seat-map-scroll";
 
  map.append(
-  createMiniSeatRows("first",seatCounts),
-  createMiniSeatRows("second",seatCounts)
+  createMySeatFloor("first",seatCounts),
+  createMySeatFloor("second",seatCounts)
  );
 
  const legend=document.createElement("div");
