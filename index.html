@@ -391,7 +391,14 @@ th,
   font-size:8px;
  }
 }
-
+/* MY SEATS 전용 축소 */
+.my-seat-map{
+ transform:scale(0.65);
+ transform-origin:top center;
+ width:153.85%;
+ margin-left:-26.925%;
+ margin-bottom:-35%;
+}
 </style>
 </head>
 
@@ -939,7 +946,7 @@ function renderSeatRecords(){
  stage.textContent="STAGE";
 
  const map=document.createElement("div");
- map.className="seat-map-scroll";
+map.className="seat-map-scroll my-seat-map";
 
  map.append(
   createMySeatFloor("first",seatCounts),
