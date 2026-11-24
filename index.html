@@ -394,25 +394,59 @@ th,
 /* MY SEATS 전용 좌석표 */
 .my-seat-map{
  width:100%;
- overflow:hidden;
+ max-width:100%;
+ overflow-x:auto;
+ overflow-y:hidden;
  box-sizing:border-box;
- padding:8px 0;
+ padding:8px 4px 12px;
 }
 
 .my-seat-map .venue-floor-map{
- transform:scale(0.65);
- transform-origin:top center;
  width:max-content;
+ min-width:0;
  margin:0 auto;
+ transform:none;
+}
+
+/* 좌석표 크기 조금 키우기 */
+.my-seat-map .venue-row{
+ gap:2px;
+ min-height:20px;
+ margin:3px auto;
+}
+
+.my-seat-map .venue-row-label{
+ width:16px;
+ font-size:9px;
 }
 
 .my-seat-map .venue-seat{
  display:flex;
  align-items:center;
  justify-content:center;
- text-align:center;
+ width:16px;
+ height:17px;
+ font-size:8px;
  padding:0;
  box-sizing:border-box;
+ cursor:default;
+}
+
+.my-seat-map .venue-gap{
+ width:11px;
+}
+
+.my-seat-map .control-booth{
+ width:135px;
+ height:19px;
+ font-size:8px;
+}
+
+/* 1층과 2층 사이 구분선 */
+.my-seat-map .venue-floor-map:first-child{
+ padding-bottom:10px;
+ margin-bottom:10px;
+ border-bottom:1px solid #9BAFC2;
 }
 </style>
 </head>
@@ -897,11 +931,6 @@ function setupFilter(){
 function createMySeatFloor(floor,seatCounts){
  const wrapper=document.createElement("div");
  wrapper.className="venue-floor-map";
-
- const heading=document.createElement("div");
- heading.className="venue-floor-heading";
- heading.textContent=floor==="first"?"1층":"2층";
- wrapper.appendChild(heading);
 
  artoneSeatLayout[floor].forEach(data=>{
   const row=document.createElement("div");
